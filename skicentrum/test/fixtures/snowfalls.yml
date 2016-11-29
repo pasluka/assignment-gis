@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 
+  new_snow: 
+  total_snow: 
+  base_depth: 1
+  resort_id: 
+
+two:
+  date: 
+  new_snow: 
+  total_snow: 
+  base_depth: 1
+  resort_id: 

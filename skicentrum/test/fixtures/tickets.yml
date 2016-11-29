@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 
+  price_adult: 
+  price_junior: 
+  price_child: 
+  price_senior: MyString
+  resort_id: 
+
+two:
+  type: 
+  price_adult: 
+  price_junior: 
+  price_child: 
+  price_senior: MyString
+  resort_id: 

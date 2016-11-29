@@ -1,0 +1,113 @@
+<div class="container map-container">
+  <div class="row row-fill">
+    <div class="col-md-3">
+      <form>
+        <div class="form-group">
+          <label for="minelevation">Minimum Elevation</label>
+          <input type="number" class="form-control" id="minelevation" placeholder="Enter minimal Elevation" value="0">
+          <label for="maxelevation">Maximum Elevation</label>
+          <input type="number" class="form-control" id="maxelevation" placeholder="Enter minimal Lifts Count" value="8000">
+          <label for="region">Region</label>
+          <%= select_tag "region", options_from_collection_for_select(@regions, "id", "name"), include_blank: "Any", class: "form-control" %>
+          <label for="facilities">Show nearby facilities</label>
+          <%= select_tag "facilities", options_for_select(@facilities.map {|fac| [fac['name'], fac['id']]}), include_blank: "None", class: "form-control" %>
+          <label for="facilityDistance">Distance to facility (km)</label>
+          <input type="number" class="form-control" id="facilityDistance", placeholder="Enter maximal Distance from Resort" value="5">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="myFunction()">Submit</button>
+      </form>
+    </div>
+    <div class="col-md-9 column-fill">
+      <div id='map'></div>
+      <script>
+          L.mapbox.accessToken = 'pk.eyJ1IjoicGFzbHVrYSIsImEiOiJjaXczNDY1cngwMDAyMnRtcG05bWFjZGx3In0.X5kv26rCpretx0DUHwwTaA'
+
+          var map = L.mapbox.map('map').setView([55.15, 11.82], 4);
+          L.mapbox.styleLayer('mapbox://styles/pasluka/ciw33ztpo00gh2ko2jhzx7ilc').addTo(map);
+          var clusterLayer = new L.MarkerClusterGroup();
+          var customLayer = L.mapbox.featureLayer();
+          var minElev;
+          var maxElev;
+          var region;
+          var facilities;
+          var distance;
+
+
+
+          function  myFunction() {
+            minElev = $('#minelevation').val();
+            maxElev = $('#maxelevation').val();
+            region = $('#region').val();
+            facilities = $('#facilities').val();
+            distance = $('#facilityDistance').val();
+            clusterLayer.clearLayers();
+            if(region && facilities) {
+                showwithfacilitieswithinregion();
+            }
+            else if (region) {
+                showwithinregion();
+            }
+            else if(facilities) {
+                showwithfacilities();
+            }
+            else {
+                showresorts();
+            }
+            clusterLayer.addLayer(customLayer);
+            addmarkers();
+            map.addLayer(clusterLayer)
+          }
+
+          function addmarkers() {
+            customLayer.eachLayer(function(layer) {
+              if(layer.feature.properties.minElev) {
+                var marker = '<h3>' + layer.feature.properties.title + '</h3>' +
+                    '<b>Minimal Elevation:</b>' + layer.feature.properties.minElev +
+                    '<br><b>Maximal Elevation:</b>' + layer.feature.properties.maxElev +
+                    '<br><b>GPS:</b>' + layer.feature.geometry.coordinates +
+                    '<br><a href="/skiresort/' + layer.feature.properties.id + '" target="_blank">More info</a>';
+                layer.bindPopup(marker)
+              } else {
+                var marker = '<h3>' + layer.feature.properties.title + '</h3>' +
+                    '<b>Type:</b>' + layer.feature.properties.tourism +
+                    '<br><b>Tags:</b>' + layer.feature.properties.tags +
+                    '<br><b>GPS:</b>' + layer.feature.geometry.coordinates;
+                layer.bindPopup(marker)
+              }
+            });
+          }
+
+          function showwithfacilitieswithinregion() {
+            customLayer.loadURL('/ski_resorts_fac_reg.json?minlat='+map.getBounds()._southWest.lat+"&maxlat="+map.getBounds()._northEast.lat+"&minlng="
+                +map.getBounds()._southWest.lng+"&maxlng="+map.getBounds()._northEast.lng+"&minElev="+minElev+"&maxElev="+maxElev+"&region="+region+"&facility="+facilities+"&distance="+distance);
+          }
+
+          function showwithfacilities() {
+            customLayer.loadURL('/ski_resorts_fac.json?minlat='+map.getBounds()._southWest.lat+"&maxlat="+map.getBounds()._northEast.lat+"&minlng="
+                +map.getBounds()._southWest.lng+"&maxlng="+map.getBounds()._northEast.lng+"&minElev="+minElev+"&maxElev="+maxElev+"&facility="+facilities+"&distance="+distance);
+          }
+
+          function showwithinregion() {
+            customLayer.loadURL('/ski_resorts_reg.json?minlat='+map.getBounds()._southWest.lat+"&maxlat="+map.getBounds()._northEast.lat+"&minlng="
+                +map.getBounds()._southWest.lng+"&maxlng="+map.getBounds()._northEast.lng+"&minElev="+minElev+"&maxElev="+maxElev+"&region="+region);
+          }
+
+          function showresorts() {
+            customLayer.loadURL('/ski_resorts.json?minlat='+map.getBounds()._southWest.lat+"&maxlat="+map.getBounds()._northEast.lat+"&minlng="
+                +map.getBounds()._southWest.lng+"&maxlng="+map.getBounds()._northEast.lng+"&minElev="+minElev+"&maxElev="+maxElev);
+
+          }
+
+
+          myFunction();
+
+
+          map.on('moveend', function(e) {
+            myFunction();
+
+          });
+      </script>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,127 @@
+<div class="container">
+  <h1><%= @resort.name %> Ski resort</h1>
+  <h3>Information</h3>
+  <div class="text">
+    <b>Minimal Elevation:</b> <%= @resort.min_elevation %> m
+    <br>
+    <b>Maximal Elavation:</b> <%= @resort.max_elevation %> m
+    <br>
+    <b>Regions:</b>
+      <% @resort.regions.each do |region| %>
+        <%= region.name %>,
+      <% end %>
+    <br>
+    <b>Location:</b> <%= @resort.geometry.as_text.gsub("POINT (", "").gsub(")", "")  %>
+    <br>
+    <b>URL: </b><a href="http://www.onthesnow.com/<%= @resort.urlhelper%>/ski-resort.html" target="_blank"><%= @resort.name %> page</a>
+
+    <br>
+    <h3>Prices</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Ticket</th>
+          <th>Child</th>
+          <th>Junior</th>
+          <th>Adult</th>
+          <th>Senior</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @resort.tickets.each do |ticket| %>
+        <tr>
+          <td><%= ticket.ticket_type %></td>
+          <td><%= ticket.price_child %></td>
+          <td><%= ticket.price_junior %></td>
+          <td><%= ticket.price_adult %></td>
+          <td><%= ticket.price_senior %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h3>Snowfall statistics</h3>
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#2016" data-toggle="tab">2016</a>
+      </li>
+      <li><a href="#2015" data-toggle="tab">2015</a></li>
+      <li><a href="#2014" data-toggle="tab">2014</a></li>
+      <li><a href="#2013" data-toggle="tab">2013</a></li>
+
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="2016">
+        <div class="row">
+          <div class="col-md-3">Date</div>
+          <div class="col-md-3">New Snow</div>
+          <div class="col-md-3">Total Snow</div>
+          <div class="col-md-3">Base Depth</div>
+        </div>
+        <% @resort.snowfalls.where('extract(year from date) = (?)', 2016).each do |snowfall| %>
+            <div class="row">
+              <div class="col-md-3"><%= snowfall.date.strftime("%d.%m.%Y") %></div>
+              <div class="col-md-3"><%= snowfall.new_snow %> cm</div>
+              <div class="col-md-3"><%= snowfall.total_snow %> cm</div>
+              <div class="col-md-3"><%= snowfall.base_depth %> cm</div>
+            </div>
+        <% end %>
+      </div>
+      <div class="tab-pane" id="2015">
+        <div class="row">
+          <div class="col-md-3">Date</div>
+          <div class="col-md-3">New Snow</div>
+          <div class="col-md-3">Total Snow</div>
+          <div class="col-md-3">Base Depth</div>
+        </div>
+        <% @resort.snowfalls.where('extract(year from date) = (?)', 2015).each do |snowfall| %>
+            <div class="row">
+              <div class="col-md-3"><%= snowfall.date.strftime("%d.%m.%Y") %></div>
+              <div class="col-md-3"><%= snowfall.new_snow %> cm</div>
+              <div class="col-md-3"><%= snowfall.total_snow %> cm</div>
+              <div class="col-md-3"><%= snowfall.base_depth %> cm</div>
+            </div>
+        <% end %>
+      </div>
+      <div class="tab-pane" id="2014">
+        <div class="row">
+          <div class="col-md-3">Date</div>
+          <div class="col-md-3">New Snow</div>
+          <div class="col-md-3">Total Snow</div>
+          <div class="col-md-3">Base Depth</div>
+        </div>
+        <% @resort.snowfalls.where('extract(year from date) = (?)', 2014).each do |snowfall| %>
+            <div class="row">
+              <div class="col-md-3"><%= snowfall.date.strftime("%d.%m.%Y") %></div>
+              <div class="col-md-3"><%= snowfall.new_snow %> cm</div>
+              <div class="col-md-3"><%= snowfall.total_snow %> cm</div>
+              <div class="col-md-3"><%= snowfall.base_depth %> cm</div>
+            </div>
+        <% end %>
+      </div>
+      <div class="tab-pane" id="2013">
+        <div class="row">
+          <div class="col-md-3">Date</div>
+          <div class="col-md-3">New Snow</div>
+          <div class="col-md-3">Total Snow</div>
+          <div class="col-md-3">Base Depth</div>
+        </div>
+        <% @resort.snowfalls.where('extract(year from date) = (?)', 2013).each do |snowfall| %>
+            <div class="row">
+              <div class="col-md-3"><%= snowfall.date.strftime("%d.%m.%Y") %></div>
+              <div class="col-md-3"><%= snowfall.new_snow %> cm</div>
+              <div class="col-md-3"><%= snowfall.total_snow %> cm</div>
+              <div class="col-md-3"><%= snowfall.base_depth %> cm</div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+
+    <br>
+
+
+
+
+  </div>
+</div>
+<!-- resort info site will be here, title just for testing -->

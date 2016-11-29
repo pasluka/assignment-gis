@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  resort_id: 
+  region_id: 
+
+two:
+  resort_id: 
+  region_id: 
