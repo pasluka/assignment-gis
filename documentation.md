@@ -10,13 +10,13 @@ Users are also able to show nearby facilities such as ski schools, ski rentals a
 Users can view resort detail, containing basic resort information, ticket prices and snowfall data.
 
 ## Application screenshots
-![screenshots](screenshot1.png)
+![Screenshot](screenshot1.png)
 Showing all resorts with longitude and latitude for selected region
 
-![screenshots](screenshot2.png)
+![Screenshot](screenshot2.png)
 Showing all resorts along with accomodation facilities
 
-![screenshots](screenshot3.png)
+![Screenshot](screenshot3.png)
 Showing resort detail
 
 # Frontend
